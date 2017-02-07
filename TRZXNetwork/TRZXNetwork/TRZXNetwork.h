@@ -45,6 +45,29 @@ typedef NS_ENUM(NSInteger, NetworkMethod) {
 };
 
 
+/**
+ *  GET POST请求数据缓存方式
+ */
+typedef NS_ENUM(NSUInteger, NetworkingRequestCachePolicy){
+    /**
+     *  有缓存就先返回缓存，同步请求数据
+     */
+    NetworkingReturnCacheDataThenLoad       = 1 << 0,
+    /**
+     *  忽略缓存，重新请求
+     */
+    NetworkingReloadIgnoringLocalCacheData  = 1 << 2,
+    /**
+     *  有缓存就用缓存，没有缓存就重新请求(用于数据不变时)
+     */
+    NetworkingReturnCacheDataElseLoad       = 1 << 3,
+    /**
+     *  有缓存就用缓存，没有缓存就不发请求，当做请求出错处理（用于离线模式）
+     */
+    NetworkingReturnCacheDataDontLoad       = 1 << 4,
+};
+
+
 
 /**
  *  数据串行方式
@@ -68,22 +91,10 @@ typedef NS_ENUM(NSInteger, SerializerType) {
  */
 typedef NSURLSessionTask URLSessionTask;
 
-
 /**
- *  请求回调
- *
- *  @param response 成功后返回的数据
+ 有网YES, 无网:NO
  */
-typedef void(^requestCallbackBlock)(id response,NSError *error);
-
-
-/**
- *  进度
- *
- *  @param bytesRead              已下载或者上传进度的大小
- *  @param totalBytes                总下载或者上传进度的大小
- */
-typedef void(^NetWorkingProgress)(int64_t bytesRead,int64_t totalBytes);
++ (BOOL)isNetwork;
 
 
 /**
@@ -102,19 +113,6 @@ typedef void(^NetWorkingProgress)(int64_t bytesRead,int64_t totalBytes);
 
 
 /**
- *  取消所有请求
- */
-+ (void)cancelAllRequest;
-
-/**
- *  根据url取消请求
- *
- *  @param url 请求url
- */
-+ (void)cancelRequestWithURL:(NSString *)url;
-
-
-/**
  *	设置超时时间
  *
  *  @param timeout 超时时间
@@ -130,21 +128,78 @@ typedef void(^NetWorkingProgress)(int64_t bytesRead,int64_t totalBytes);
 + (void)updateRequestSerializerType:(SerializerType)requestType
                  responseSerializer:(SerializerType)responseType;
 
+
+
 /**
- *  统一请求接口
+ *  请求回调
+ *
+ *  @param response 成功后返回的数据
+ */
+typedef void(^requestCallbackBlock)(id response,NSError *error);
+
+
+/**
+ *  进度
+ *
+ *  @param bytesRead              已下载或者上传进度的大小
+ *  @param totalBytes                总下载或者上传进度的大小
+ */
+typedef void(^NetWorkingProgress)(int64_t bytesRead,int64_t totalBytes);
+
+
+
+
+
+/**
+ *  取消所有请求
+ */
++ (void)cancelAllRequest;
+
+/**
+ *  根据url取消请求
+ *
+ *  @param url 请求url
+ */
++ (void)cancelRequestWithURL:(NSString *)url;
+
+
+
+
+
+
+
+/**
+ *  统一请求接口(不带缓存)
  *
  *  @param url                  请求路径
  *  @param params               拼接参数
  *  @param method               请求方式（0为POST,1为GET）
- *  @param isCache              是否使用缓存
  *  @param callbackBlock        请求回调
  *
  *  @return 返回的对象中可取消请求
  */
 + (URLSessionTask *)requestWithUrl:(NSString *)url
                             params:(NSDictionary *)params
-                            isCache:(BOOL)isCache
                             method:(NetworkMethod)method
+                     callbackBlock:(requestCallbackBlock)callbackBlock;
+
+
+
+/**
+ *  统一请求接口
+ *
+ *  @param url                  请求路径
+ *  @param params               拼接参数
+ *  @param method               请求方式（0为POST,1为GET）
+ *  @param cachePolicy          缓存类型
+ *  @param callbackBlock        请求回调
+ *
+ *  @return 返回的对象中可取消请求
+ */
++ (URLSessionTask *)requestWithUrl:(NSString *)url
+                            params:(NSDictionary *)params
+                            method:(NetworkMethod)method
+                       cachePolicy:(NetworkingRequestCachePolicy)cachePolicy
                      callbackBlock:(requestCallbackBlock)callbackBlock;
 
 
@@ -199,5 +254,22 @@ typedef void(^NetWorkingProgress)(int64_t bytesRead,int64_t totalBytes);
                          saveToPath:(NSString *)saveToPath
                       progressBlock:(NetWorkingProgress)progressBlock
                       callbackBlock:(requestCallbackBlock)callbackBlock;
+
+
+/**
+ *  下载文件
+ *
+ *  @param URL      请求地址
+ *  @param fileDir  文件存储目录(默认存储目录为Download)
+ *  @param progressBlock 文件下载的进度信息
+ *  @param callbackBlock    请求回调
+ *
+ *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
+ */
++ (URLSessionTask *)downloadWithURL:(NSString *)URL
+                                       fileDir:(NSString *)fileDir
+                                      progressBlock:(NetWorkingProgress)progressBlock
+                                       callbackBlock:(requestCallbackBlock)callbackBlock;
+
 
 @end

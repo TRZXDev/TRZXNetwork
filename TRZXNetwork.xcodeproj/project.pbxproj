@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		714397D31E485BC40051794D /* TRZXNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 714397D21E485BC40051794D /* TRZXNetworkCache.m */; };
-		714397D61E486FEC0051794D /* TRZXNetworkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 714397D51E486FEC0051794D /* TRZXNetworkView.m */; };
-		714397D81E486FF80051794D /* TRZXNetworkView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 714397D71E486FF80051794D /* TRZXNetworkView.xib */; };
 		71A1D4181E4821A30017161E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A1D4171E4821A30017161E /* main.m */; };
 		71A1D41B1E4821A30017161E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A1D41A1E4821A30017161E /* AppDelegate.m */; };
 		71A1D41E1E4821A30017161E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A1D41D1E4821A30017161E /* ViewController.m */; };
@@ -26,9 +24,6 @@
 		355F89A350A48F2B61C8836F /* Pods-TRZXNetwork.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TRZXNetwork.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TRZXNetwork/Pods-TRZXNetwork.debug.xcconfig"; sourceTree = "<group>"; };
 		714397D11E485BC40051794D /* TRZXNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRZXNetworkCache.h; sourceTree = "<group>"; };
 		714397D21E485BC40051794D /* TRZXNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRZXNetworkCache.m; sourceTree = "<group>"; };
-		714397D41E486FEC0051794D /* TRZXNetworkView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRZXNetworkView.h; sourceTree = "<group>"; };
-		714397D51E486FEC0051794D /* TRZXNetworkView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRZXNetworkView.m; sourceTree = "<group>"; };
-		714397D71E486FF80051794D /* TRZXNetworkView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TRZXNetworkView.xib; sourceTree = "<group>"; };
 		71A1D4131E4821A30017161E /* TRZXNetwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRZXNetwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A1D4171E4821A30017161E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		71A1D4191E4821A30017161E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -114,9 +109,6 @@
 				71A1D42F1E48231F0017161E /* TRZXNetwork.m */,
 				714397D11E485BC40051794D /* TRZXNetworkCache.h */,
 				714397D21E485BC40051794D /* TRZXNetworkCache.m */,
-				714397D41E486FEC0051794D /* TRZXNetworkView.h */,
-				714397D51E486FEC0051794D /* TRZXNetworkView.m */,
-				714397D71E486FF80051794D /* TRZXNetworkView.xib */,
 			);
 			path = TRZXNetwork;
 			sourceTree = "<group>";
@@ -192,7 +184,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				71A1D4261E4821A30017161E /* LaunchScreen.storyboard in Resources */,
-				714397D81E486FF80051794D /* TRZXNetworkView.xib in Resources */,
 				71A1D4231E4821A30017161E /* Assets.xcassets in Resources */,
 				71A1D4211E4821A30017161E /* Main.storyboard in Resources */,
 			);
@@ -254,7 +245,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				714397D31E485BC40051794D /* TRZXNetworkCache.m in Sources */,
-				714397D61E486FEC0051794D /* TRZXNetworkView.m in Sources */,
 				71A1D41E1E4821A30017161E /* ViewController.m in Sources */,
 				71A1D41B1E4821A30017161E /* AppDelegate.m in Sources */,
 				71A1D4301E48231F0017161E /* TRZXNetwork.m in Sources */,
@@ -381,7 +371,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 487PQPPTGA;
 				INFOPLIST_FILE = TRZXNetwork/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mmwipo.com.TRZXNetwork;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -395,7 +385,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = 487PQPPTGA;
 				INFOPLIST_FILE = TRZXNetwork/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = mmwipo.com.TRZXNetwork;
 				PRODUCT_NAME = "$(TARGET_NAME)";

@@ -11,7 +11,6 @@
 #import <YYCache/YYCache.h>
 #import "AFNetworkActivityIndicatorManager.h"
 #import "TRZXNetworkCache.h"
-#import "TRZXNetworkView.h"
 
 #define TRZXLog(FORMAT, ...) fprintf(stderr, "[%s:%d行] %s\n", [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);  //如果不需要打印数据, 注释掉NSLog
 
@@ -44,6 +43,11 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
         }
     });
     return requestTasks;
+}
+
++ (BOOL)isNetwork
+{
+    return [AFNetworkReachabilityManager sharedManager].reachable;
 }
 
 + (void)configHttpHeaders:(NSDictionary *)httpHeaders {
@@ -123,6 +127,23 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 }
 
 
+/**
+ *  统一请求接口(不带缓存)
+ *
+ *  @param url                  请求路径
+ *  @param params               拼接参数
+ *  @param method               请求方式（0为POST,1为GET）
+ *  @param callbackBlock        请求回调
+ *
+ *  @return 返回的对象中可取消请求
+ */
++ (URLSessionTask *)requestWithUrl:(NSString *)url
+                            params:(NSDictionary *)params
+                            method:(NetworkMethod)method
+                     callbackBlock:(requestCallbackBlock)callbackBlock{
+    return [self requestWithUrl:url params:params method:method cachePolicy:NetworkingReloadIgnoringLocalCacheData callbackBlock:callbackBlock];
+}
+
 
 
 /**
@@ -130,16 +151,16 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
  *
  *  @param url                  请求路径
  *  @param params               拼接参数
- *  @param method           请求方式（0为POST,1为GET）
- *  @param isCache             是否使用缓存
+ *  @param method               请求方式（0为POST,1为GET）
+ *  @param cachePolicy          是否使用缓存
  *  @param callbackBlock        请求回调
  *
  *  @return 返回的对象中可取消请求
  */
 + (URLSessionTask *)requestWithUrl:(NSString *)url
                             params:(NSDictionary *)params
-                           isCache:(BOOL)isCache
                             method:(NetworkMethod)method
+                       cachePolicy:(NetworkingRequestCachePolicy)cachePolicy
                      callbackBlock:(requestCallbackBlock)callbackBlock{
 
 
@@ -151,12 +172,6 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
     //拼接
     NSString * cacheUrl = [self urlDictToStringWithUrlStr:url WithDict:params];
 
-
-    id cacheData;
-    if (isCache) {
-        //根据网址从Cache中取数据
-        cacheData = [TRZXNetworkCache httpCacheForURL:url parameters:params];
-    }
 
 
     AFHTTPSessionManager *manager = [self manager];
@@ -172,6 +187,45 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
     if (currentLanguage != nil && [currentLanguage length]>0) {
         [params setValue:currentLanguage forKey:@"language"];
     }
+
+
+
+    //根据网址从Cache中取数据
+    id cacheData = [TRZXNetworkCache httpCacheForURL:url parameters:params];
+
+    switch (cachePolicy) {
+        case NetworkingReturnCacheDataThenLoad: { // 先返回缓存，同时请求
+            if (cacheData) {
+                callbackBlock(cacheData,nil);
+            }
+            break;
+        }
+        case NetworkingReloadIgnoringLocalCacheData: { // 忽略本地缓存直接请求
+            // 不做处理，直接请求
+            break;
+        }
+        case NetworkingReturnCacheDataElseLoad: { // 有缓存就返回缓存，没有就请求
+            if (cacheData) { // 有缓存
+                callbackBlock(cacheData,nil);
+                return session;
+            }
+            break;
+        }
+        case NetworkingReturnCacheDataDontLoad: { // 有缓存就返回缓存,从不请求（用于没有网络）
+            if (cacheData) { // 有缓存
+                callbackBlock(cacheData,nil);
+            }
+            return session; // 退出从不请求
+        }
+        default: {
+            break;
+        }
+    }
+
+
+
+
+
 
     TRZXLog(@"URL=%@",cacheUrl);
     TRZXLog(@"params=%@",params==nil?@"无参数":params);
@@ -194,18 +248,10 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
                 double end = CFAbsoluteTimeGetCurrent();
+                TRZXLog(@"TRZXNetwork====%fs JSON字符串= %@",(end-start),[self jsonToString:responseObject]);
 
-
-                TRZXLog(@"耗时=%fs JSON字符串= %@",(end-start),[self jsonToString:responseObject]);
-
-
-                if (isCache) {
-                    [TRZXNetworkCache setHttpCache:responseObject URL:url parameters:params];
-                }
-                //这里可能会出现一种情况就是时间戳的问题，可能其他都是一样的，只有时间戳是不同的，那么就需要差异处理，最好不要返回不同的信息。
-                if (!isCache || ![cacheData isEqual:responseObject]) {
-                    callbackBlock ? callbackBlock(responseObject,nil) : nil;
-                }
+                [TRZXNetworkCache setHttpCache:responseObject URL:url parameters:params];
+                callbackBlock ? callbackBlock(responseObject,nil) : nil;
 
                 [[self allTasks] removeObject:task];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -233,16 +279,10 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
             } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
 
                 double end = CFAbsoluteTimeGetCurrent();
-                TRZXLog(@"耗时=%fs JSON字符串= %@",(end-start),[self jsonToString:responseObject]);
+                TRZXLog(@"TRZXNetwork====%fs JSON字符串= %@",(end-start),[self jsonToString:responseObject]);
 
-
-                if (isCache) {
-                    [TRZXNetworkCache setHttpCache:responseObject URL:url parameters:params];
-                }
-
-                if (!isCache || ![cacheData isEqual:responseObject]) {
-                    callbackBlock ? callbackBlock(responseObject,nil) : nil;
-                }
+                [TRZXNetworkCache setHttpCache:responseObject URL:url parameters:params];
+                callbackBlock ? callbackBlock(responseObject,nil) : nil;
 
                 [[self allTasks] removeObject:task];
             } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
@@ -426,6 +466,67 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 
 }
 
+
+/**
+ *  下载文件
+ *
+ *  @param URL      请求地址
+ *  @param fileDir  文件存储目录(默认存储目录为Download)
+ *  @param progressBlock 文件下载的进度信息
+ *  @param callbackBlock    请求回调
+ *
+ *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
+ */
++ (URLSessionTask *)downloadWithURL:(NSString *)URL
+                            fileDir:(NSString *)fileDir
+                      progressBlock:(NetWorkingProgress)progressBlock
+                      callbackBlock:(requestCallbackBlock)callbackBlock{
+
+    NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
+
+    AFHTTPSessionManager *manager = [self manager];
+    URLSessionTask *session = nil;
+
+    session = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {
+        TRZXLog(@"下载进度:%.2f%%",100.0*downloadProgress.completedUnitCount/downloadProgress.totalUnitCount);
+
+        //下载进度
+        dispatch_sync(dispatch_get_main_queue(), ^{
+            progressBlock ? progressBlock(downloadProgress.completedUnitCount, downloadProgress.totalUnitCount) : nil;
+        });
+
+    } destination:^NSURL * _Nonnull(NSURL * _Nonnull targetPath, NSURLResponse * _Nonnull response) {
+
+        //拼接缓存目录
+        NSString *downloadDir = [[NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES) lastObject] stringByAppendingPathComponent:fileDir ? fileDir : @"Download"];
+
+        //打开文件管理器
+        NSFileManager *fileManager = [NSFileManager defaultManager];
+        //创建Download目录
+        [fileManager createDirectoryAtPath:downloadDir withIntermediateDirectories:YES attributes:nil error:nil];
+        //拼接文件路径
+        NSString *filePath = [downloadDir stringByAppendingPathComponent:response.suggestedFilename];
+
+        TRZXLog(@"downloadDir = %@",downloadDir);
+        //返回文件位置的URL路径
+        return [NSURL fileURLWithPath:filePath];
+
+    } completionHandler:^(NSURLResponse * _Nonnull response, NSURL * _Nullable filePath, NSError * _Nullable error) {
+
+        [[self allTasks] removeObject:session];
+        if(callbackBlock && error) {callbackBlock(nil,error) ; return ;};
+        callbackBlock ? callbackBlock(filePath.absoluteString,nil /** NSURL->NSString*/) : nil;
+
+    }];
+
+    //开始下载
+    [session resume];
+
+    // 添加sessionTask到数组
+    session ? [[self allTasks] addObject:session] : nil ;
+    return session;
+
+}
 
 
 

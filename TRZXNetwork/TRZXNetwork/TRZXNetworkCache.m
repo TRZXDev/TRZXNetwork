@@ -28,20 +28,6 @@ static YYCache *_dataCache;
 
     id cacheData = [_dataCache objectForKey:cacheKey];
 
-    if (cacheData != 0) {
-        //将数据统一处理
-        if ([cacheData isKindOfClass:[NSDictionary  class]]) {
-            NSDictionary *  requestDic = (NSDictionary *)cacheData;
-            //根据返回的接口内容来变
-            NSString * succ = [NSString stringWithFormat:@"%@",requestDic[@"code"]];
-            if ([succ isEqualToString:@"200"]) {
-                if ([requestDic isKindOfClass:[NSDictionary  class]]) {
-                    NSLog(@"requestDic>>>  %@",requestDic);
-                }
-                return cacheData;
-            }
-        }
-    }
     return cacheData;
 }
 
