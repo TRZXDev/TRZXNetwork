@@ -7,9 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <ReactiveCocoa/ReactiveCocoa.h>
+#import <ReactiveCocoa.h>
 #import "City.h"
-
 @interface UserViewModel : NSObject
 @property (strong, nonatomic) NSDictionary *parameters; ///  配置网络请求参数
 @property (strong, nonatomic) RACSignal *requestSignal; ///< 网络请求信号量

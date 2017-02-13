@@ -9,7 +9,6 @@
 #import "UserViewModel.h"
 #import "TRZXNetwork.h"
 #import "MJExtension.h"
-
 static NSString *const url = @"/api/map/city/findAllList/";
 @implementation UserViewModel
 

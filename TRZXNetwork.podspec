@@ -137,7 +137,7 @@ Pod::Spec.new do |s|
     s.dependency "YYCache"
     s.dependency "AFNetworking"
     s.dependency "MJExtension"
-    s.dependency "ReactiveCocoa", '~> 2.5'
+    s.dependency "ReactiveCocoa"
 
 
 

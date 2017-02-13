@@ -1,7 +1,7 @@
 
 
 #import "TRZXNetworkCache.h"
-#import "YYCache.h"
+#import <YYCache/YYCache.h>
 
 @implementation TRZXNetworkCache
 static NSString *const NetworkResponseCache = @"PPNetworkResponseCache";

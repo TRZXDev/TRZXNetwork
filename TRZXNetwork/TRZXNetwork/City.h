@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @interface City : NSObject
 @property (nonatomic, copy) NSString *citycode;
 @property (nonatomic, copy) NSString *longitude;
