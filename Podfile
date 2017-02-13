@@ -8,7 +8,9 @@ target 'TRZXNetwork' do
   # use_frameworks!
 
     pod 'AFNetworking'
+    pod 'ReactiveCocoa', '~> 2.5'
     pod 'YYCache'
+    pod 'MJExtension'
 
   # Pods for TRZXNetwork
 

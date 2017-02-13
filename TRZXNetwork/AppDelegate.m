@@ -24,9 +24,12 @@
     [headers setValue:@"d8c86c8f343e4de6a9faab7e148bed63" forKey:@"userId"];
     [headers setValue:@"iOS" forKey:@"equipment"];
 
+
+    [TRZXNetwork configWithBaseURL:@"http://api.kipo.mmwipo.com/"];
+    [TRZXNetwork configWithNewBaseURL:@"http://api.mmwipo.com/"];
+
     // 配置请求头
     [TRZXNetwork configHttpHeaders:headers];
-    [TRZXNetwork configWithBaseURL:@"http://api.mmwipo.com/"];
 
 
 

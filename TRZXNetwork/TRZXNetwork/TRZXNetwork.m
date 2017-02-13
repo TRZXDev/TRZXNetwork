@@ -18,7 +18,9 @@ static NSMutableArray      *requestTasks;//管理网络请求的队列
 
 static NSMutableDictionary *headers; //请求头的参数设置
 
-static NSString *baseURL = @"http://api.mmwipo.com/"; //baseURL
+static NSString *baseURL = @"http://api.kipo.mmwipo.com/"; //baseURL
+static NSString *newBaseURL = @"http://api.mmwipo.com/"; //baseURL
+static NSString *kBaseURLStr_Path = @"api/mobile/center?equipment=ios";
 
 
 static NetworkStatus       networkStatus; //网络状态
@@ -63,6 +65,13 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
     baseURL = baseURL;
 }
 
++ (void)configWithNewBaseURL:(NSString *)baseURL{
+
+    newBaseURL = baseURL;
+}
+
+
+
 + (void)setupTimeout:(NSTimeInterval)timeout {
     requestTimeout = timeout;
 }
@@ -97,6 +106,36 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 
 
 
++ (AFHTTPSessionManager *)newManager{
+
+    [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
+    AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager]initWithBaseURL:[NSURL URLWithString:newBaseURL]];
+    manager.requestSerializer = [AFHTTPRequestSerializer serializer];
+    manager.responseSerializer = [AFJSONResponseSerializer serializer];
+    manager.requestSerializer.stringEncoding = NSUTF8StringEncoding;
+    AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializer];
+    [serializer setRemovesKeysWithNullValues:YES];
+
+    [headers enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+        if (obj) {
+            [manager.requestSerializer setValue:headers[key] forHTTPHeaderField:key];
+        }
+    }];
+    manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",
+                                                                              @"text/html",
+                                                                              @"text/json",
+                                                                              @"text/plain",
+                                                                              @"text/javascript",
+                                                                              @"text/xml",
+                                                                              @"image/*"]];
+    manager.requestSerializer.timeoutInterval = requestTimeout;
+
+    [self detectNetworkStaus];
+
+    return manager;
+}
+
+
 + (AFHTTPSessionManager *)manager{
 
     [AFNetworkActivityIndicatorManager sharedManager].enabled = YES;
@@ -125,6 +164,8 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 
     return manager;
 }
+
+
 
 
 /**
@@ -163,19 +204,37 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
                        cachePolicy:(NetworkingRequestCachePolicy)cachePolicy
                      callbackBlock:(requestCallbackBlock)callbackBlock{
 
+    AFHTTPSessionManager *manager ;
+    URLSessionTask *session;
 
 
-    
+    //=======================================旧的API请求方式
+
+    if (params[@"requestType"] !=nil) {
+
+        manager = [self manager];
+
+        NSString *token = headers[@"token"];
+        NSString *userId = headers[@"userId"];
+        url = [kBaseURLStr_Path stringByAppendingString:baseURL];
+        if (token!=nil&&userId!=nil) { //
+            url = [url stringByAppendingFormat:@"&token=%@&userId=%@",token,userId];
+        }
+        url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+
+    }else{
+
+        manager = [self newManager];
+
+
+    //======================================新的API请求方式
+
 
     //处理中文和空格问题
     url = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
     //拼接
     NSString * cacheUrl = [self urlDictToStringWithUrlStr:url WithDict:params];
 
-
-
-    AFHTTPSessionManager *manager = [self manager];
-    URLSessionTask *session;
     NSString *versionStr = [[[NSBundle mainBundle]infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     //版本号
     //kCFBundleIdentifierKey
@@ -222,13 +281,12 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
         }
     }
 
+        //================================================
+        TRZXLog(@"URL=%@",cacheUrl);
+        TRZXLog(@"params=%@",params==nil?@"无参数":params);
 
+    }
 
-
-
-
-    TRZXLog(@"URL=%@",cacheUrl);
-    TRZXLog(@"params=%@",params==nil?@"无参数":params);
 
 
     double start =  CFAbsoluteTimeGetCurrent();
@@ -335,7 +393,7 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
                       callbackBlock:(requestCallbackBlock)callbackBlock{
 
 
-    AFHTTPSessionManager *manager = [self manager];
+    AFHTTPSessionManager *manager = [self newManager];
 
     URLSessionTask *session = [manager POST:url parameters:params constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
         NSData *imageData = UIImageJPEGRepresentation(image, 0.4);
@@ -397,7 +455,7 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
                         progressBlock:(NetWorkingProgress)progressBlock
                         callbackBlock:(requestCallbackBlock)callbackBlock{
 
-    AFHTTPSessionManager *manager = [self manager];
+    AFHTTPSessionManager *manager = [self newManager];
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     URLSessionTask *session = nil;
 
@@ -438,7 +496,7 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
                       callbackBlock:(requestCallbackBlock)callbackBlock{
 
     NSURLRequest *downloadRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    AFHTTPSessionManager *manager = [self manager];
+    AFHTTPSessionManager *manager = [self newManager];
 
     URLSessionTask *session = nil;
 
@@ -484,7 +542,7 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 
     NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:URL]];
 
-    AFHTTPSessionManager *manager = [self manager];
+    AFHTTPSessionManager *manager = [self newManager];
     URLSessionTask *session = nil;
 
     session = [manager downloadTaskWithRequest:request progress:^(NSProgress * _Nonnull downloadProgress) {

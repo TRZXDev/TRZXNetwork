@@ -49,15 +49,10 @@ static NSString *const downloadUrl = @"http://wvideo.spriteapp.cn/video/2016/032
     }else{
 
         self.networkData.text = @"没有网络";
-
         [self getData:YES url:dataUrl];
-
         NSLog(@"无网络,加载缓存数据");
 
     }
-
-
-
 
 
 }

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="lOB-8L-sSQ">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="Sgy-6s-GyM">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Network-->
         <scene sceneID="j3h-Pf-aTF">
             <objects>
                 <viewController id="lOB-8L-sSQ" customClass="ViewController" sceneMemberID="viewController">
@@ -81,7 +81,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="56o-g5-qPk">
-                                <rect key="frame" x="156" y="596" width="62" height="30"/>
+                                <rect key="frame" x="156" y="580" width="62" height="30"/>
                                 <state key="normal" title="开始下载"/>
                                 <connections>
                                     <action selector="download:" destination="lOB-8L-sSQ" eventType="touchUpInside" id="LEU-Fh-jJx"/>
@@ -91,7 +91,7 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="LxE-qk-Nt0" firstAttribute="leading" secondItem="kVt-Qw-8xM" secondAttribute="leading" id="0E9-cU-Mw2"/>
-                            <constraint firstItem="56o-g5-qPk" firstAttribute="top" secondItem="DPM-D7-qXU" secondAttribute="bottom" constant="21" id="0j2-ti-qx7"/>
+                            <constraint firstItem="56o-g5-qPk" firstAttribute="top" secondItem="DPM-D7-qXU" secondAttribute="bottom" constant="5" id="0j2-ti-qx7"/>
                             <constraint firstItem="ouj-ei-Hef" firstAttribute="centerX" secondItem="tBb-Am-VSH" secondAttribute="centerX" id="3Dg-Cr-c4B"/>
                             <constraint firstItem="LxE-qk-Nt0" firstAttribute="top" secondItem="kVt-Qw-8xM" secondAttribute="bottom" constant="20" id="4HJ-yv-LXo"/>
                             <constraint firstItem="ouj-ei-Hef" firstAttribute="leading" secondItem="tBb-Am-VSH" secondAttribute="leadingMargin" id="6Pk-RR-pQK"/>
@@ -116,6 +116,7 @@
                             <constraint firstItem="kVt-Qw-8xM" firstAttribute="top" secondItem="ouj-ei-Hef" secondAttribute="bottom" constant="50" id="re1-ug-93C"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Network" id="G24-uO-8Rs"/>
                     <connections>
                         <outlet property="cacheData" destination="kVt-Qw-8xM" id="kDP-j1-tv6"/>
                         <outlet property="cacheStatus" destination="LxE-qk-Nt0" id="jAF-9M-evk"/>
@@ -127,7 +128,128 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="moy-jV-Ten" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="137" y="188"/>
+            <point key="canvasLocation" x="495" y="-1220"/>
+        </scene>
+        <!--Item 2-->
+        <scene sceneID="Ur1-9D-gUJ">
+            <objects>
+                <viewController id="k6h-xr-YZt" customClass="TabBar2ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DjS-Ix-dbh"/>
+                        <viewControllerLayoutGuide type="bottom" id="TFM-3L-6nt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="LNI-Xk-lqk">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="我是TabBar2" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K3r-1h-GKP">
+                                <rect key="frame" x="138" y="323" width="99" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="K3r-1h-GKP" firstAttribute="centerX" secondItem="LNI-Xk-lqk" secondAttribute="centerX" id="8uL-js-eiJ"/>
+                            <constraint firstItem="K3r-1h-GKP" firstAttribute="centerY" secondItem="LNI-Xk-lqk" secondAttribute="centerY" id="MtY-S4-hgN"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="XTO-3F-Q4R"/>
+                    <connections>
+                        <outlet property="nameLabel" destination="K3r-1h-GKP" id="0a3-TC-8PC"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="UZc-C1-iv1" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="591" y="137"/>
+        </scene>
+        <!--Tab Bar1 View Controller-->
+        <scene sceneID="RDm-vK-DSb">
+            <objects>
+                <viewController id="TSG-KA-ubP" customClass="TabBar1ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="ZAa-om-ueD"/>
+                        <viewControllerLayoutGuide type="bottom" id="z5i-PG-gV0"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="vB2-sa-u7t">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="383-wd-vDN">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="618"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <outlet property="dataSource" destination="TSG-KA-ubP" id="vZ9-vH-g8L"/>
+                                    <outlet property="delegate" destination="TSG-KA-ubP" id="Rxv-Ml-Lx4"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="383-wd-vDN" firstAttribute="top" secondItem="vB2-sa-u7t" secondAttribute="top" id="4P7-39-b6r"/>
+                            <constraint firstAttribute="trailing" secondItem="383-wd-vDN" secondAttribute="trailing" id="AUV-nZ-kdW"/>
+                            <constraint firstItem="z5i-PG-gV0" firstAttribute="top" secondItem="383-wd-vDN" secondAttribute="bottom" id="AaD-d0-JD9"/>
+                            <constraint firstItem="383-wd-vDN" firstAttribute="leading" secondItem="vB2-sa-u7t" secondAttribute="leading" id="zyy-xb-sQ7"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="hWm-FJ-UJv">
+                        <barButtonItem key="leftBarButtonItem" title="请求数据" id="bVU-2i-CnE">
+                            <connections>
+                                <action selector="requestDataBtn:" destination="TSG-KA-ubP" id="MLa-Lh-8Rl"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="清空数据" id="6JX-Lm-EWU">
+                            <connections>
+                                <action selector="emptyDataBtn:" destination="TSG-KA-ubP" id="6yW-FQ-owA"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="tableView" destination="383-wd-vDN" id="wsQ-fC-1WO"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zkB-7h-TBT" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1528.8" y="-518.59070464767615"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="MOA-l8-HBQ">
+            <objects>
+                <tabBarController id="Sgy-6s-GyM" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" id="Pzp-zJ-ugB">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="lOB-8L-sSQ" kind="relationship" relationship="viewControllers" id="8BQ-Ov-A03"/>
+                        <segue destination="30x-nj-ufU" kind="relationship" relationship="viewControllers" id="MI1-bp-kcr"/>
+                        <segue destination="k6h-xr-YZt" kind="relationship" relationship="viewControllers" id="4Sf-oz-C2X"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="QRY-rI-K0V" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-361" y="-190"/>
+        </scene>
+        <!--ViewModel-->
+        <scene sceneID="X3n-WX-plw">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="30x-nj-ufU" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="ViewModel" id="icI-il-e0a"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="NjW-lL-twv">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="TSG-KA-ubP" kind="relationship" relationship="rootViewController" id="FoF-2c-KTq"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Nfd-yl-ZTo" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="589.60000000000002" y="-518.59070464767615"/>
         </scene>
     </scenes>
 </document>

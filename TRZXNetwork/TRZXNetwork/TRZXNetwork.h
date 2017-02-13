@@ -113,6 +113,13 @@ typedef NSURLSessionTask URLSessionTask;
 
 
 /**
+ *  NewBaseURL
+ *
+ *  @param baseURL 参数
+ */
++ (void)configWithNewBaseURL:(NSString *)baseURL;
+
+/**
  *	设置超时时间
  *
  *  @param timeout 超时时间

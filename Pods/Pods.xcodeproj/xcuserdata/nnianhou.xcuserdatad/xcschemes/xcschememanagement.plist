@@ -9,7 +9,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>MJExtension.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-TRZXNetwork.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>ReactiveCocoa.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -22,7 +32,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>82BA738BC124DF29C983573163C63C0D</key>
+		<key>03958ED7F85EF0E077F17A5115D1EB1F</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -32,7 +42,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>C819978281A165302A330033E676DABA</key>
+		<key>A316B54C67E947D23CECD230FA5BFAEF</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B470C242AF6530D5384342E87EB702CB</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>BDA970C2D16967A7041B69195E564028</key>
 		<dict>
 			<key>primary</key>
 			<true/>
