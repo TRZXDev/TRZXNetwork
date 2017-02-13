@@ -16,7 +16,7 @@ Pod::Spec.new do |s|
   #
 
   s.name         = "TRZXNetwork"
-  s.version      = "0.0.3"
+  s.version      = "0.0.4"
   s.summary      = "TRZXNetwork."
 
   # This description is used to generate tags and improve search results.
@@ -137,7 +137,6 @@ Pod::Spec.new do |s|
     s.dependency "YYCache"
     s.dependency "AFNetworking"
     s.dependency "MJExtension"
-    s.dependency "ReactiveCocoa"
 
 
 
