@@ -8,11 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		714397D31E485BC40051794D /* TRZXNetworkCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 714397D21E485BC40051794D /* TRZXNetworkCache.m */; };
-		714BD7FC1E4D62DD00BEF8EC /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 714BD7FB1E4D62DD00BEF8EC /* User.m */; };
 		714BD8001E4D877600BEF8EC /* TabBar1ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714BD7FF1E4D877600BEF8EC /* TabBar1ViewController.m */; };
 		714BD8031E4D878400BEF8EC /* TabBar2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 714BD8021E4D878400BEF8EC /* TabBar2ViewController.m */; };
-		714BD8081E4DB94000BEF8EC /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 714BD8061E4DB94000BEF8EC /* City.m */; };
-		7163BF561E5180ED0012AFE9 /* UserViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7163BF551E5180ED0012AFE9 /* UserViewModel.m */; };
+		7163BF601E5183F50012AFE9 /* City.m in Sources */ = {isa = PBXBuildFile; fileRef = 7163BF5B1E5183F50012AFE9 /* City.m */; };
+		7163BF611E5183F50012AFE9 /* User.m in Sources */ = {isa = PBXBuildFile; fileRef = 7163BF5D1E5183F50012AFE9 /* User.m */; };
+		7163BF621E5183F50012AFE9 /* UserViewModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 7163BF5F1E5183F50012AFE9 /* UserViewModel.m */; };
 		71A1D4181E4821A30017161E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A1D4171E4821A30017161E /* main.m */; };
 		71A1D41B1E4821A30017161E /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A1D41A1E4821A30017161E /* AppDelegate.m */; };
 		71A1D41E1E4821A30017161E /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 71A1D41D1E4821A30017161E /* ViewController.m */; };
@@ -29,16 +29,16 @@
 		3BAF89D225F9A085AE9763FE /* libPods-TRZXNetwork.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TRZXNetwork.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		714397D11E485BC40051794D /* TRZXNetworkCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TRZXNetworkCache.h; sourceTree = "<group>"; };
 		714397D21E485BC40051794D /* TRZXNetworkCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TRZXNetworkCache.m; sourceTree = "<group>"; };
-		714BD7FA1E4D62DD00BEF8EC /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
-		714BD7FB1E4D62DD00BEF8EC /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
 		714BD7FE1E4D877600BEF8EC /* TabBar1ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBar1ViewController.h; sourceTree = "<group>"; };
 		714BD7FF1E4D877600BEF8EC /* TabBar1ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBar1ViewController.m; sourceTree = "<group>"; };
 		714BD8011E4D878400BEF8EC /* TabBar2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TabBar2ViewController.h; sourceTree = "<group>"; };
 		714BD8021E4D878400BEF8EC /* TabBar2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TabBar2ViewController.m; sourceTree = "<group>"; };
-		714BD8051E4DB94000BEF8EC /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
-		714BD8061E4DB94000BEF8EC /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
-		7163BF541E5180ED0012AFE9 /* UserViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewModel.h; sourceTree = "<group>"; };
-		7163BF551E5180ED0012AFE9 /* UserViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewModel.m; sourceTree = "<group>"; };
+		7163BF5A1E5183F50012AFE9 /* City.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = City.h; sourceTree = "<group>"; };
+		7163BF5B1E5183F50012AFE9 /* City.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = City.m; sourceTree = "<group>"; };
+		7163BF5C1E5183F50012AFE9 /* User.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = User.h; sourceTree = "<group>"; };
+		7163BF5D1E5183F50012AFE9 /* User.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = User.m; sourceTree = "<group>"; };
+		7163BF5E1E5183F50012AFE9 /* UserViewModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserViewModel.h; sourceTree = "<group>"; };
+		7163BF5F1E5183F50012AFE9 /* UserViewModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserViewModel.m; sourceTree = "<group>"; };
 		71A1D4131E4821A30017161E /* TRZXNetwork.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TRZXNetwork.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		71A1D4171E4821A30017161E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		71A1D4191E4821A30017161E /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -77,6 +77,12 @@
 		714BD7FD1E4D875600BEF8EC /* Tab */ = {
 			isa = PBXGroup;
 			children = (
+				7163BF5A1E5183F50012AFE9 /* City.h */,
+				7163BF5B1E5183F50012AFE9 /* City.m */,
+				7163BF5C1E5183F50012AFE9 /* User.h */,
+				7163BF5D1E5183F50012AFE9 /* User.m */,
+				7163BF5E1E5183F50012AFE9 /* UserViewModel.h */,
+				7163BF5F1E5183F50012AFE9 /* UserViewModel.m */,
 				714BD7FE1E4D877600BEF8EC /* TabBar1ViewController.h */,
 				714BD7FF1E4D877600BEF8EC /* TabBar1ViewController.m */,
 				714BD8011E4D878400BEF8EC /* TabBar2ViewController.h */,
@@ -132,16 +138,10 @@
 		71A1D42D1E4821BF0017161E /* TRZXNetwork */ = {
 			isa = PBXGroup;
 			children = (
-				7163BF541E5180ED0012AFE9 /* UserViewModel.h */,
-				7163BF551E5180ED0012AFE9 /* UserViewModel.m */,
 				71A1D42E1E48231F0017161E /* TRZXNetwork.h */,
 				71A1D42F1E48231F0017161E /* TRZXNetwork.m */,
 				714397D11E485BC40051794D /* TRZXNetworkCache.h */,
 				714397D21E485BC40051794D /* TRZXNetworkCache.m */,
-				714BD7FA1E4D62DD00BEF8EC /* User.h */,
-				714BD7FB1E4D62DD00BEF8EC /* User.m */,
-				714BD8051E4DB94000BEF8EC /* City.h */,
-				714BD8061E4DB94000BEF8EC /* City.m */,
 			);
 			path = TRZXNetwork;
 			sourceTree = "<group>";
@@ -279,11 +279,11 @@
 			files = (
 				714397D31E485BC40051794D /* TRZXNetworkCache.m in Sources */,
 				714BD8031E4D878400BEF8EC /* TabBar2ViewController.m in Sources */,
-				714BD7FC1E4D62DD00BEF8EC /* User.m in Sources */,
-				7163BF561E5180ED0012AFE9 /* UserViewModel.m in Sources */,
+				7163BF611E5183F50012AFE9 /* User.m in Sources */,
+				7163BF621E5183F50012AFE9 /* UserViewModel.m in Sources */,
+				7163BF601E5183F50012AFE9 /* City.m in Sources */,
 				71A1D41E1E4821A30017161E /* ViewController.m in Sources */,
 				71A1D41B1E4821A30017161E /* AppDelegate.m in Sources */,
-				714BD8081E4DB94000BEF8EC /* City.m in Sources */,
 				71A1D4301E48231F0017161E /* TRZXNetwork.m in Sources */,
 				71A1D4181E4821A30017161E /* main.m in Sources */,
 				714BD8001E4D877600BEF8EC /* TabBar1ViewController.m in Sources */,

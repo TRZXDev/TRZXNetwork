@@ -46,17 +46,17 @@
 // 发起请求
 - (void)sendRequest {
 
-//    [self.userViewModel.requestSignal subscribeNext:^(NSMutableArray *lists) {
-//
-//        // 请求完成后，更新UI
-//
-//        [self.tableView reloadData];
-//
-//
-//    } error:^(NSError *error) {
-//        // 如果请求失败，则根据error做出相应提示
-//        
-//    }];
+    [self.userViewModel.requestSignal subscribeNext:^(NSMutableArray *lists) {
+
+        // 请求完成后，更新UI
+
+        [self.tableView reloadData];
+
+
+    } error:^(NSError *error) {
+        // 如果请求失败，则根据error做出相应提示
+        
+    }];
 }
 
 
