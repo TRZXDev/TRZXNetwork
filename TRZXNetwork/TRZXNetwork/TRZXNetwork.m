@@ -8,7 +8,6 @@
 
 #import "TRZXNetwork.h"
 #import "AFNetworking.h"
-#import <YYCache/YYCache.h>
 #import "AFNetworkActivityIndicatorManager.h"
 #import "TRZXNetworkCache.h"
 
