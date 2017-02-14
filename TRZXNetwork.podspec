@@ -11,6 +11,7 @@ Pod::Spec.new do |s|
   
   s.requires_arc = true
   s.source_files = 'TRZXNetwork/TRZXNetwork/*.{h,m}'
-  s.public_header_files = 'TRZXNetwork/TRZXNetwork/**/*.h'
+  s.dependency "AFNetworking"
+  s.dependency "YYCache"
 
 end
