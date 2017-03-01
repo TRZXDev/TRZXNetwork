@@ -11,6 +11,9 @@
 #import "AFNetworkActivityIndicatorManager.h"
 #import "TRZXNetworkCache.h"
 
+
+#define kNetworkMethodName @[@"GET", @"POST"]
+
 #define TRZXLog(FORMAT, ...) fprintf(stderr, "[%s:%d行] %s\n", [[[NSString stringWithUTF8String:__FILE__] lastPathComponent] UTF8String], __LINE__, [[NSString stringWithFormat:FORMAT, ##__VA_ARGS__] UTF8String]);  //如果不需要打印数据, 注释掉NSLog
 
 static NSMutableArray      *requestTasks;//管理网络请求的队列
@@ -111,23 +114,28 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
     AFHTTPSessionManager *manager = [[AFHTTPSessionManager manager]initWithBaseURL:[NSURL URLWithString:newBaseURL]];
     manager.requestSerializer = [AFHTTPRequestSerializer serializer];
     manager.responseSerializer = [AFJSONResponseSerializer serializer];
-    manager.requestSerializer.stringEncoding = NSUTF8StringEncoding;
-    AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializer];
-    [serializer setRemovesKeysWithNullValues:YES];
-
-    [headers enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-        if (obj) {
-            [manager.requestSerializer setValue:headers[key] forHTTPHeaderField:key];
-        }
-    }];
-    manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",
-                                                                              @"text/html",
-                                                                              @"text/json",
-                                                                              @"text/plain",
-                                                                              @"text/javascript",
-                                                                              @"text/xml",
-                                                                              @"image/*"]];
-    manager.requestSerializer.timeoutInterval = requestTimeout;
+    //    manager.requestSerializer.stringEncoding = NSUTF8StringEncoding;
+    //    AFJSONResponseSerializer *serializer = [AFJSONResponseSerializer serializer];
+    //    [serializer setRemovesKeysWithNullValues:YES];
+    //
+    //    [headers enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+    //        if (obj) {
+    //            [manager.requestSerializer setValue:headers[key] forHTTPHeaderField:key];
+    //        }
+    //    }];
+    //
+    //    [manager.requestSerializer setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+    //    [manager.requestSerializer setValue:@"iOS" forHTTPHeaderField:@"equipment"];
+    //
+    //
+    //    manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",
+    //                                                                              @"text/html",
+    //                                                                              @"text/json",
+    //                                                                              @"text/plain",
+    //                                                                              @"text/javascript",
+    //                                                                              @"text/xml",
+    //                                                                              @"image/*"]];
+    //    manager.requestSerializer.timeoutInterval = requestTimeout;
 
     [self detectNetworkStaus];
 
@@ -150,6 +158,9 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
             [manager.requestSerializer setValue:headers[key] forHTTPHeaderField:key];
         }
     }];
+
+
+
     manager.responseSerializer.acceptableContentTypes = [NSSet setWithArray:@[@"application/json",
                                                                               @"text/html",
                                                                               @"text/json",
@@ -204,158 +215,176 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
                      callbackBlock:(requestCallbackBlock)callbackBlock{
 
     AFHTTPSessionManager *manager ;
-    URLSessionTask *session;
+    NSURLSessionDataTask *session;
+
+
+    // 检测网络
+    if (networkStatus == NetworkStatusNotReachable ||  networkStatus == NetworkStatusUnknown) {
+        callbackBlock ? callbackBlock(nil,ERROR) : nil;
+        return nil;
+    }
+
+
 
 
     //=======================================旧的API请求方式
+    double start =  CFAbsoluteTimeGetCurrent();
+
+    NSString *token = headers[@"token"];
+    NSString *userId = headers[@"userId"];
 
     if (params[@"requestType"] !=nil) {
 
         manager = [self manager];
 
-        NSString *token = headers[@"token"];
-        NSString *userId = headers[@"userId"];
         url = [kBaseURLStr_Path stringByAppendingString:baseURL];
         if (token!=nil&&userId!=nil) { //
             url = [url stringByAppendingFormat:@"&token=%@&userId=%@",token,userId];
         }
         url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
+
+        TRZXLog(@"TRZXNetwork>1.0===== %@",url);
+
+
+
+
+        //    发起请求
+        switch (method) {
+            case GET:{
+
+                session = [manager GET:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
+
+                } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                    callbackBlock ? callbackBlock(responseObject,nil) : nil;
+
+                    double end = CFAbsoluteTimeGetCurrent();
+                    TRZXLog(@"TRZXNetwork>1.0===== 耗时=%fs\n%@",(end-start),[self jsonToString:responseObject]);
+                    [[self allTasks] removeObject:task];
+                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                    callbackBlock ? callbackBlock(nil,error) : nil;
+                    TRZXLog(@"TRZXNetwork>1.0===== error=%@",error);
+                    [[self allTasks] removeObject:task];
+                }];
+
+                break;}
+            case POST:{
+
+
+                session = [manager POST:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
+
+                } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+                    callbackBlock ? callbackBlock(responseObject,nil) : nil;
+
+                    double end = CFAbsoluteTimeGetCurrent();
+                    TRZXLog(@"TRZXNetwork>1.0===== 耗时=%fs\n%@",(end-start),[self jsonToString:responseObject]);
+
+                    [[self allTasks] removeObject:task];
+                } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+                    TRZXLog(@"TRZXNetwork>1.0===== error=%@",error);
+
+                    callbackBlock ? callbackBlock(nil,error) : nil;
+                    [[self allTasks] removeObject:task];
+                }];
+
+
+                break;}
+            default:
+                break;
+        }
+
+
+
     }else{
 
+        //======================================新的API请求方式
+
+
+
+        TRZXLog(@"TRZXNetwork>2.0===== %@%@",newBaseURL,url);
+        TRZXLog(@"TRZXNetwork>2.0===== %@",params);
+
+
+
         manager = [self newManager];
+        //处理中文和空格问题
+        url = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+        url = [NSString stringWithFormat:@"%@%@",newBaseURL,url];
+
+        NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:url]];
+        [request setHTTPMethod:kNetworkMethodName[method]];
+        [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
+        [request setValue:@"iOS" forHTTPHeaderField:@"equipment"];
+        [request setValue:token  forHTTPHeaderField:@"token"];
+        [request setValue:userId forHTTPHeaderField:@"userId"];
+
+        if (params) {
+            NSString *httpBody = [[self getJSONData:params] stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+            [request setHTTPBody:[httpBody dataUsingEncoding:NSUTF8StringEncoding]]; // 此处设置请求体 (即将参数加密后的字符串,转为data) 一般是参数字典转json字符串,再将json字符串加密,最后将加密后的字符串转为data 设置为请求体
+        }
 
 
-    //======================================新的API请求方式
+
+        //    发起请求
+        switch (method) {
+            case GET:{
+                //所有 Get 请求，增加缓存机制
+
+                session = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+                    double end = CFAbsoluteTimeGetCurrent();
 
 
-    //处理中文和空格问题
-    url = [url stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    //拼接
-    NSString * cacheUrl = [self urlDictToStringWithUrlStr:url WithDict:params];
+                    if (error) {
+                        TRZXLog(@"TRZXNetwork>2.0===== error=%@",error);
 
-    NSString *versionStr = [[[NSBundle mainBundle]infoDictionary] objectForKey:@"CFBundleShortVersionString"];
-    //版本号
-    //kCFBundleIdentifierKey
-    [params setValue:versionStr forKey:@"version"];
-    //区分来源
-    [params setValue:@"ios" forKey:@"os"];
-    //当前使用的语言
-    NSString *currentLanguage = [[NSLocale preferredLanguages] objectAtIndex:0];
-    if (currentLanguage != nil && [currentLanguage length]>0) {
-        [params setValue:currentLanguage forKey:@"language"];
+                        callbackBlock ? callbackBlock(nil,error) : nil;
+
+                    }else{
+                        TRZXLog(@"TRZXNetwork>2.0===== 耗时=%fs\n%@",(end-start),[self jsonToString:responseObject]);
+
+                        callbackBlock ? callbackBlock(responseObject,nil) : nil;
+                    }
+
+                }];
+
+                [session resume];
+
+                break;}
+            case POST:{
+
+                session = [manager dataTaskWithRequest:request completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+                    double end = CFAbsoluteTimeGetCurrent();
+
+
+                    if (error) {
+                        TRZXLog(@"TRZXNetwork>2.0===== error=%@",error);
+
+                        callbackBlock ? callbackBlock(nil,error) : nil;
+
+
+                    }else{
+                        TRZXLog(@"TRZXNetwork>2.0===== 耗时=%fs\n%@",(end-start),[self jsonToString:responseObject]);
+
+                        callbackBlock ? callbackBlock(responseObject,nil) : nil;
+
+
+                    }
+
+                }];
+
+                [session resume];
+                break;}
+            default:
+                break;
+        }
+
+
+
+
+
     }
 
 
-
-    //根据网址从Cache中取数据
-    id cacheData = [TRZXNetworkCache httpCacheForURL:url parameters:params];
-
-    switch (cachePolicy) {
-        case NetworkingReturnCacheDataThenLoad: { // 先返回缓存，同时请求
-            if (cacheData) {
-                callbackBlock(cacheData,nil);
-            }
-            break;
-        }
-        case NetworkingReloadIgnoringLocalCacheData: { // 忽略本地缓存直接请求
-            // 不做处理，直接请求
-            break;
-        }
-        case NetworkingReturnCacheDataElseLoad: { // 有缓存就返回缓存，没有就请求
-            if (cacheData) { // 有缓存
-                callbackBlock(cacheData,nil);
-                return session;
-            }
-            break;
-        }
-        case NetworkingReturnCacheDataDontLoad: { // 有缓存就返回缓存,从不请求（用于没有网络）
-            if (cacheData) { // 有缓存
-                callbackBlock(cacheData,nil);
-            }
-            return session; // 退出从不请求
-        }
-        default: {
-            break;
-        }
-    }
-
-        //================================================
-        TRZXLog(@"URL=%@",cacheUrl);
-        TRZXLog(@"params=%@",params==nil?@"无参数":params);
-
-    }
-
-
-
-    double start =  CFAbsoluteTimeGetCurrent();
-
-    //    发起请求
-    switch (method) {
-        case GET:{
-
-
-            if (networkStatus == NetworkStatusNotReachable ||  networkStatus == NetworkStatusUnknown) {
-                callbackBlock ? callbackBlock(nil,ERROR) : nil;
-                return nil;
-            }
-
-            session = [manager GET:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
-
-
-            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-                double end = CFAbsoluteTimeGetCurrent();
-                TRZXLog(@"TRZXNetwork====%fs JSON字符串= %@",(end-start),[self jsonToString:responseObject]);
-
-                [TRZXNetworkCache setHttpCache:responseObject URL:url parameters:params];
-                callbackBlock ? callbackBlock(responseObject,nil) : nil;
-
-                [[self allTasks] removeObject:task];
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-                callbackBlock ? callbackBlock(nil,error) : nil;
-                TRZXLog(@">>>error  %@",error);
-
-                [[self allTasks] removeObject:task];
-            }];
-
-
-
-
-
-            break;}
-        case POST:{
-
-            if (networkStatus == NetworkStatusNotReachable ||  networkStatus == NetworkStatusUnknown) {
-                callbackBlock ? callbackBlock(nil,ERROR) : nil;
-
-                return nil;
-            }
-            session = [manager POST:url parameters:params progress:^(NSProgress * _Nonnull downloadProgress) {
-
-
-            } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-
-                double end = CFAbsoluteTimeGetCurrent();
-                TRZXLog(@"TRZXNetwork====%fs JSON字符串= %@",(end-start),[self jsonToString:responseObject]);
-
-                [TRZXNetworkCache setHttpCache:responseObject URL:url parameters:params];
-                callbackBlock ? callbackBlock(responseObject,nil) : nil;
-
-                [[self allTasks] removeObject:task];
-            } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-
-                TRZXLog(@">>>error  %@",error);
-
-
-                callbackBlock ? callbackBlock(nil,error) : nil;
-                [[self allTasks] removeObject:task];
-            }];
-
-
-            break;}
-        default:
-            break;
-    }
 
 
     if (session) {
@@ -677,11 +706,32 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 /**
  *  json转字符串
  */
-+ (NSString *)jsonToString:(id)data
++ (NSString *)jsonToString:(NSDictionary*)data
 {
     if(!data) { return nil; }
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:nil];
     return [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+}
+
+/**
+ *  将字典或者数组转化为JSON串
+ *
+ *  @param data 字典
+ *
+ *  @return JSON字符串
+ */
++ (NSString *)getJSONData:(id)data{
+    
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:data options:NSJSONWritingPrettyPrinted error:&error];
+    if ([jsonData length] > 0 && error == nil){
+        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
+        //jsonString = [jsonString stringByReplacingOccurrencesOfString:@"\\" withString:@""];
+        
+        return jsonString;
+    }else{
+        return nil;
+    }
 }
 
 

@@ -33,16 +33,30 @@ typedef NS_ENUM(NSInteger, NetworkStatus) {
 /**
  *  请求方式
  */
-typedef NS_ENUM(NSInteger, NetworkMethod) {
-    /**
-     *  POST方式来进行请求
-     */
-    POST = 1 << 0,
+typedef enum {
     /**
      *  GET方式来进行请求
      */
-    GET  = 1 << 1
-};
+    GET = 0,
+    /**
+     *  POST方式来进行请求
+     */
+    POST
+} NetworkMethod;
+
+///**
+// *  请求方式
+// */
+//typedef NS_ENUM(NSInteger, NetworkMethod) {
+//    /**
+//     *  POST方式来进行请求
+//     */
+//    POST = 1 << 0,
+//    /**
+//     *  GET方式来进行请求
+//     */
+//    GET  = 1 << 1
+//};
 
 
 /**

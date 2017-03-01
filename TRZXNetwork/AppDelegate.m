@@ -19,14 +19,14 @@
     // Override point for customization after application launch.
 
 
+
     NSMutableDictionary *headers = [[NSMutableDictionary alloc]init];
-    [headers setValue:@"7d841879eb22e804e05e937c4c960889" forKey:@"token"];
+    [headers setValue:@"7a06aecbda8db7cb30665e919cdf8433" forKey:@"token"];
     [headers setValue:@"d8c86c8f343e4de6a9faab7e148bed63" forKey:@"userId"];
-    [headers setValue:@"iOS" forKey:@"equipment"];
 
 
-    [TRZXNetwork configWithBaseURL:@"http://api.kipo.mmwipo.com/"];
-    [TRZXNetwork configWithNewBaseURL:@"http://api.mmwipo.com/"];
+    [TRZXNetwork configWithBaseURL:@"http://test.mmwipo.com:8088/"];
+    [TRZXNetwork configWithNewBaseURL:@"http://123.56.228.107:8081/"];
 
     // 配置请求头
     [TRZXNetwork configHttpHeaders:headers];
