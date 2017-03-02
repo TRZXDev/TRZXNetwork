@@ -58,19 +58,27 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
     headers = httpHeaders.mutableCopy;
 }
 
+
+
 /**
- *  配置请求头
+ *  baseURL
  *
- *  @param baseURL 请求头参数
+ *  @param baseURL 参数
  */
-+ (void)configWithBaseURL:(NSString *)baseURL{
-    baseURL = baseURL;
++ (void)configWithBaseURL:(NSString *)url{
+    baseURL = url;
 }
 
-+ (void)configWithNewBaseURL:(NSString *)baseURL{
 
-    newBaseURL = baseURL;
+/**
+ *  NewBaseURL
+ *
+ *  @param baseURL 参数
+ */
++ (void)configWithNewBaseURL:(NSString *)url{
+    newBaseURL = url;
 }
+
 
 
 
@@ -237,14 +245,15 @@ static NSString * const ERROR_IMFORMATION = @"网络出现错误，请检查网�
 
         manager = [self manager];
 
-        url = [kBaseURLStr_Path stringByAppendingString:baseURL];
+        url = kBaseURLStr_Path;
         if (token!=nil&&userId!=nil) { //
             url = [url stringByAppendingFormat:@"&token=%@&userId=%@",token,userId];
         }
         url = [url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
 
 
-        TRZXLog(@"TRZXNetwork>1.0===== %@",url);
+        TRZXLog(@"TRZXNetwork>1.0===== %@%@",baseURL,url);
+        TRZXLog(@"TRZXNetwork>1.0===== %@",params);
 
 
 

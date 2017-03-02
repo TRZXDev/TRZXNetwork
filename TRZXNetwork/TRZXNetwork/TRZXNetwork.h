@@ -123,7 +123,7 @@ typedef NSURLSessionTask URLSessionTask;
  *
  *  @param baseURL 参数
  */
-+ (void)configWithBaseURL:(NSString *)baseURL;
++ (void)configWithBaseURL:(NSString *)url;
 
 
 /**
@@ -131,8 +131,7 @@ typedef NSURLSessionTask URLSessionTask;
  *
  *  @param baseURL 参数
  */
-+ (void)configWithNewBaseURL:(NSString *)baseURL;
-
++ (void)configWithNewBaseURL:(NSString *)url;
 /**
  *	设置超时时间
  *
@@ -244,7 +243,7 @@ typedef void(^NetWorkingProgress)(int64_t bytesRead,int64_t totalBytes);
                                type:(NSString *)type
                              params:(NSDictionary *)params
                       progressBlock:(NetWorkingProgress)progressBlock
-                       callbackBlock:(requestCallbackBlock)callbackBlock;
+                      callbackBlock:(requestCallbackBlock)callbackBlock;
 
 /**
  *  文件上传接口
@@ -288,9 +287,9 @@ typedef void(^NetWorkingProgress)(int64_t bytesRead,int64_t totalBytes);
  *  @return 返回NSURLSessionDownloadTask实例，可用于暂停继续，暂停调用suspend方法，开始下载调用resume方法
  */
 + (URLSessionTask *)downloadWithURL:(NSString *)URL
-                                       fileDir:(NSString *)fileDir
-                                      progressBlock:(NetWorkingProgress)progressBlock
-                                       callbackBlock:(requestCallbackBlock)callbackBlock;
+                            fileDir:(NSString *)fileDir
+                      progressBlock:(NetWorkingProgress)progressBlock
+                      callbackBlock:(requestCallbackBlock)callbackBlock;
 
 
 @end
